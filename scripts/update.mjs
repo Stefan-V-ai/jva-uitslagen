@@ -13,8 +13,9 @@ const res = await runUpdate(data, fetch, m => console.log(m), {
   disciplines: args.mtb ? ["cross", "mtb"] : ["cross"],
 });
 
-const after = JSON.stringify(data);
-const changed = after !== JSON.stringify(JSON.parse(before));
+const sortKeys = x => Array.isArray(x) ? x.map(sortKeys) : x && typeof x === "object" ? Object.fromEntries(Object.keys(x).sort().map(k => [k, sortKeys(x[k])])) : x;
+const after = JSON.stringify(sortKeys(data));
+const changed = after !== JSON.stringify(sortKeys(JSON.parse(before)));
 if (changed) writeFileSync("data.json", after + "\n");
 
 const lines = [];
