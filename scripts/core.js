@@ -49,6 +49,7 @@ async function pool(items, n, fn) {
 
 const sortKeys = x => Array.isArray(x) ? x.map(sortKeys) : x && typeof x === "object" ? Object.fromEntries(Object.keys(x).sort().map(k => [k, sortKeys(x[k])])) : x;
 const canon = x => JSON.stringify(sortKeys(x));
+const tidy = s => String(s || "").replace(/\s+/g, " ").trim();
 const iso = s => String(s || "").slice(0, 10);
 const addDays = (d, n) => { const t = new Date(d + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };
 const slug = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -103,6 +104,7 @@ async function listEvents(get, discipline, fromDate) {
 async function processRace(get, raceStub, ev, discipline, keep) {
   let results = await get(`races/race-results?raceId=${raceStub.id}&sorting=!pos.HasValue,+pos+asc`);
   if (!Array.isArray(results)) results = results.items || [];
+  for (const x of results) { x.personFullName = tidy(x.personFullName); x.personLicenseOrganisationName = tidy(x.personLicenseOrganisationName); }
   const club = results.filter(x => CLUB.test(x.personLicenseOrganisationName || ""));
   if (!club.length) return null;
   const race = await get(`races/${raceStub.id}?id=${raceStub.id}`);
@@ -209,6 +211,7 @@ async function updateStandings(get, data, log) {
       const latest = races[0];
       const res = await get(`ranking-results/ranking-results?rankingId=${rankingId}&raceId=${latest.id}&maxResultCount=1000&sorting=position&onlyWithPoints=true`);
       const items = (res.items || []).slice().sort((a, b) => +a.position - +b.position);
+      for (const x of items) { x.personFullName = tidy(x.personFullName); x.personClubName = tidy(x.personClubName); }
       if (!items.length) continue;
       const clubIdx = items.map((x, i) => CLUB.test(x.personClubName || "") ? i : -1).filter(i => i >= 0);
       const id = `comp-${c.id}`;
