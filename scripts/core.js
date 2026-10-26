@@ -82,6 +82,8 @@ function raceLabel(race) {
   if (cats.length && cats.every(c => c.a != null && c.a >= 16 && c.a <= 17 && c.s === "M")) return "Nieuwelingen M";
   return String(race.name || "").replace(/^Jeugd\s*-\s*/i, "").trim();
 }
+// "U16 (1e jaars nwl)" -> "U16, 1e-jaars"; "U19 (2e jaars Junior)" -> "U19, 2e-jaars junior"
+const cleanCat = c => String(c || "").replace(/\s*\((\d)e[\s-]*jaars\s*(nwl)?\s*(junior)?\s*\)/i, (_, n, _nwl, jr) => `, ${n}e-jaars${jr ? " junior" : ""}`).trim();
 const cleanEvent = n => String(n || "").replace(/\s+20\d\d(\s*[-/]\s*20\d\d)?\s*$/, "").trim();
 
 async function listEvents(get, discipline, fromDate) {
@@ -136,7 +138,7 @@ async function processRace(get, raceStub, ev, discipline, keep) {
       discipline, date, place, eventName, race: label,
       total: finishers.length, boys, girls,
       name: x.personFullName, nr: isNum(x.bib || x.startNumber) ? +(x.bib || x.startNumber) : (x.bib || x.startNumber || null),
-      cat: inf.cat ? `${sex === "V" ? "V" : "M"}${inf.cat}` : "",
+      cat: inf.cat ? `${sex === "V" ? "V" : "M"}${cleanCat(inf.cat)}` : "",
       sex: sex || "", pos: fin ? +x.pos : null, sexPos,
       status: fin ? "" : fmtStatus(x.status),
       sourceUrl,

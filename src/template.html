@@ -1,0 +1,488 @@
+<title>Crossuitslagen Jan van Arckel</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#1E2622">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: telefoon-app. Vaste kop met discipline-keuze, scrollend scherm, tabbalk onderin. Schermen worden op een stapel gezet (terugknop). */
+:root{
+  --bg:#ECEEEA; --surface:#FFFFFF; --ink:#1E2622; --muted:#5A6660; --line:#D9DED8; --chip:#E3E7E1;
+  --bar:#1E2622; --bar-ink:#F4F6F2; --bar-muted:#A9B4AE;
+  --plate:#F3C33B; --plate-ink:#1E2622; --win:#B8530F; --win-soft:#F6E3D4;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --tabh:64px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121815; --surface:#1B231F; --ink:#ECEFEA; --muted:#A3ADA7; --line:#2C3631; --chip:#25302A;
+  --bar:#0B100D; --bar-ink:#ECEFEA; --bar-muted:#8E9993;
+  --plate:#F3C33B; --plate-ink:#1E2622; --win:#F0A066; --win-soft:#3A2A1E; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815; --surface:#1B231F; --ink:#ECEFEA; --muted:#A3ADA7; --line:#2C3631; --chip:#25302A;
+  --bar:#0B100D; --bar-ink:#ECEFEA; --bar-muted:#8E9993;
+  --plate:#F3C33B; --plate-ink:#1E2622; --win:#F0A066; --win-soft:#3A2A1E; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.4;-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bar)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--win);outline-offset:2px}
+
+/* Kop */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bar);color:var(--bar-ink)}
+.top-in{max-width:600px;margin:0 auto;padding-block:8px 10px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:8px}
+.top-row{display:flex;align-items:center;gap:8px;min-height:44px}
+.top h1{margin:0;flex:1;min-width:0;font-family:var(--display);font-weight:800;font-size:24px;line-height:1;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .club{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--bar-muted);display:block;margin-bottom:2px}
+.icon-btn{all:unset;box-sizing:border-box;cursor:pointer;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;position:relative;flex-shrink:0}
+.icon-btn:hover{background:rgba(255,255,255,.08)}
+.icon-btn:focus-visible{outline:2px solid var(--plate)}
+.icon-btn .dot{position:absolute;top:6px;right:6px;min-width:18px;height:18px;border-radius:9px;background:var(--plate);color:var(--plate-ink);font:700 11px/18px var(--body);text-align:center;padding:0 4px;box-sizing:border-box}
+.disc{display:grid;grid-template-columns:1fr 1fr;background:rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.disc button{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;padding:8px 6px;border-radius:8px;font:700 15px var(--body);color:var(--bar-muted);min-height:38px}
+.disc button[aria-pressed="true"]{background:var(--bar-ink);color:var(--bar)}
+.disc button:focus-visible{outline:2px solid var(--plate)}
+
+/* Scherm */
+main{max-width:600px;margin:0 auto;padding-top:14px;padding-bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px) + 24px);padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:12px}
+.sec-title{margin:8px 4px 0;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.card{all:unset;box-sizing:border-box;display:block;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;text-align:left}
+.card:hover{border-color:var(--muted)}
+.card:active{transform:scale(.995)}
+.card:focus-visible{outline:2px solid var(--win)}
+div.card{cursor:default}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:24px;text-align:center;color:var(--muted)}
+
+/* Wedstrijdkaart */
+.ev{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center}
+.date{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--chip);border-radius:10px;height:52px;font-family:var(--display);line-height:1}
+.date b{font-size:24px;font-weight:800}
+.date span{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--muted)}
+.ev h2{margin:0;font-family:var(--display);font-weight:700;font-size:22px;line-height:1.05;text-transform:uppercase}
+.ev p{margin:2px 0 0;color:var(--muted);font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:var(--chip);font-size:13px;font-weight:600;color:var(--muted)}
+.chip.win{background:var(--win-soft);color:var(--win)}
+.chev{color:var(--muted)}
+
+/* Renner-uitslagkaart */
+.group{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.group-h{padding:10px 14px;background:var(--chip);display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 10px;align-items:baseline}
+.group-h b{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:.04em;text-transform:uppercase}
+.group-h span{font-size:13px;color:var(--muted)}
+.res{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:44px minmax(0,1fr) auto 14px;gap:12px;align-items:center;width:100%;padding:12px 14px;min-height:60px}
+.res+.res{border-top:1px solid var(--line)}
+.res:hover{background:var(--chip)}
+.res:focus-visible{outline:2px solid var(--win);outline-offset:-2px}
+.plate{width:44px;height:36px;border-radius:6px;background:var(--plate);color:var(--plate-ink);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:20px;font-variant-numeric:tabular-nums}
+.who{min-width:0}
+.who b{display:block;font-size:17px;overflow-wrap:anywhere}
+.who > span{display:block;font-size:13px;color:var(--muted)}
+.pl{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pl b{display:block;font-family:var(--display);font-weight:800;font-size:24px;line-height:1}
+.pl span{display:block;font-size:13px;color:var(--muted)}
+.res.won .pl b,.res.won .pl .g{color:var(--win)}
+.res.dns .pl b{color:var(--muted)}
+.sx{display:inline-block;min-width:1.4em;margin-left:6px;padding:0 4px;border:1px solid var(--line);border-radius:5px;font:700 11px/16px var(--body);text-align:center;color:var(--muted);vertical-align:2px}
+.badge{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--win);color:var(--surface);font:700 11px/16px var(--body);letter-spacing:.04em;text-transform:uppercase;vertical-align:2px}
+
+/* Rennerslijst */
+.search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 12px;min-height:46px}
+.search input{all:unset;flex:1;min-width:0;font-size:16px;color:var(--ink);height:44px}
+.rider{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:40px minmax(0,1fr) auto 14px;gap:12px;align-items:center;width:100%;padding:12px 14px;min-height:60px}
+.rider+.rider{border-top:1px solid var(--line)}
+.rider:hover{background:var(--chip)}
+.rider:focus-visible{outline:2px solid var(--win);outline-offset:-2px}
+.ava{width:40px;height:40px;border-radius:50%;background:var(--chip);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink)}
+.stat-mini{text-align:right;font-size:13px;color:var(--muted);white-space:nowrap}
+.stat-mini b{color:var(--ink);font-size:15px}
+
+/* Profiel */
+.prof{display:flex;gap:14px;align-items:center}
+.prof .ava{width:56px;height:56px;font-size:24px;background:var(--plate);color:var(--plate-ink)}
+.prof h2{margin:0;font-family:var(--display);font-weight:800;font-size:28px;line-height:1;text-transform:uppercase}
+.prof p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px}
+.stat{background:var(--chip);border-radius:10px;padding:10px 6px;text-align:center}
+.stat b{display:block;font-family:var(--display);font-weight:800;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--chip);border-radius:12px;padding:3px;gap:3px}
+.seg button{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;padding:10px;border-radius:9px;font:700 15px var(--body);color:var(--muted);min-height:42px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg button:focus-visible{outline:2px solid var(--win)}
+
+/* Uitslag- en klassementsdetail */
+.meta{margin:0;color:var(--muted);font-size:14px}
+.meta a{color:var(--ink)}
+.lead{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.lead .lbl{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lead .nm{font-weight:700;font-size:16px}
+.lead .dt{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.big{display:flex;gap:20px;flex-wrap:wrap;padding:4px 2px}
+.big b{display:block;font-family:var(--display);font-weight:800;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.big span{display:block;color:var(--muted);font-size:13px}
+.tbl{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tbl td{padding:10px 10px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:first-child td{border-top:0}
+.tbl td:first-child{width:3ch;font-weight:700}
+.tbl td:last-child{text-align:right;white-space:nowrap}
+.tbl .sub{display:block;color:var(--muted);font-size:13px;font-weight:400}
+.tbl tr.me td{background:var(--win-soft);font-weight:700}
+.tbl tr.me .sub{color:var(--ink)}
+details.comp{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+details.comp summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;min-height:48px;box-sizing:border-box}
+details.comp summary::-webkit-details-marker{display:none}
+details.comp summary:focus-visible{outline:2px solid var(--win);outline-offset:-2px}
+details.comp[open] summary{border-bottom:1px solid var(--line);background:var(--chip)}
+.sum{display:flex;flex-wrap:wrap;gap:0 8px;align-items:baseline;min-width:0}
+.sum .t{font-family:var(--display);font-weight:600;font-size:18px;text-transform:uppercase;letter-spacing:.03em}
+.sum b{font-weight:800}
+.chev-d{flex-shrink:0;transition:transform .15s}
+details[open] .chev-d{transform:rotate(180deg)}
+.comp-in{padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px}
+.comp-in .tbl{border:0;border-radius:0}
+.kl-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.note{color:var(--muted);font-size:13px;margin:0 4px}
+
+/* Tabbalk */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.tabs-in{max-width:600px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);height:var(--tabh)}
+.tabs button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:600 12px var(--body);color:var(--muted)}
+.tabs button[aria-current="page"]{color:var(--ink)}
+.tabs button[aria-current="page"] svg{color:var(--win)}
+.tabs button:focus-visible{outline:2px solid var(--win);outline-offset:-4px;border-radius:12px}
+
+/* Filterpaneel */
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(8,12,10,.5)}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--surface);border-radius:18px 18px 0 0;padding-block:10px calc(16px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-height:85vh;overflow:auto}
+.sheet-in{max-width:568px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 4px}
+.sheet h2{margin:0;font-family:var(--display);font-weight:800;font-size:24px;text-transform:uppercase}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.field .lab{font-size:14px;font-weight:600}
+.field select,.field input{font:16px var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-height:46px;box-sizing:border-box;width:100%}
+.seg3{display:grid;grid-template-columns:repeat(3,1fr);background:var(--chip);border-radius:12px;padding:3px;gap:3px}
+.seg3 button{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;padding:10px 4px;border-radius:9px;font:700 14px var(--body);color:var(--muted);min-height:42px}
+.seg3 button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.sheet-actions{display:grid;grid-template-columns:1fr 2fr;gap:10px}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;padding:12px;border-radius:12px;font:700 16px var(--body);min-height:48px}
+.btn.sec{background:var(--chip)}
+.btn.pri{background:var(--ink);color:var(--bg)}
+.btn:focus-visible{outline:2px solid var(--win);outline-offset:2px}
+
+@media (prefers-reduced-motion:no-preference){
+  .screen{animation:in .18s ease-out}
+  .sheet{animation:up .2s ease-out}
+  @keyframes in{from{transform:translateX(12px);opacity:.6}to{transform:none;opacity:1}}
+  @keyframes up{from{transform:translateY(30px);opacity:.6}to{transform:none;opacity:1}}
+}
+@media (max-width:380px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="top-row">
+      <button type="button" class="icon-btn" id="back" aria-label="Terug" hidden><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <h1 id="title"><span class="club">RC Jan van Arckel</span><span id="title-t">Uitslagen</span></h1>
+      <button type="button" class="icon-btn" id="filter-btn" aria-label="Filters"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span class="dot" id="filter-dot" hidden></span></button>
+    </div>
+    <div class="disc" role="group" aria-label="Discipline" id="disc">
+      <button type="button" data-disc="cross" aria-pressed="true">Veldrijden 26/27</button>
+      <button type="button" data-disc="mtb" aria-pressed="false">MTB LJC 2026</button>
+    </div>
+  </div>
+</header>
+
+<main id="screen" class="screen" aria-live="polite"></main>
+
+<nav class="tabs" aria-label="Hoofdmenu">
+  <div class="tabs-in">
+    <button type="button" data-tab="uitslagen"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>Uitslagen</button>
+    <button type="button" data-tab="renners"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Renners</button>
+    <button type="button" data-tab="klassement"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/></svg>Klassement</button>
+  </div>
+</nav>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t" hidden>
+  <div class="sheet-in">
+    <div class="grab" aria-hidden="true"></div>
+    <h2 id="sheet-t">Filters</h2>
+    <div class="field"><label for="f-ev">Wedstrijd</label><select id="f-ev"></select></div>
+    <div class="field"><span class="lab" id="f-sex-l">Jongens of meisjes</span>
+      <div class="seg3" role="group" aria-labelledby="f-sex-l" id="f-sex">
+        <button type="button" data-sex="" aria-pressed="true">Allemaal</button>
+        <button type="button" data-sex="M" aria-pressed="false">Jongens</button>
+        <button type="button" data-sex="V" aria-pressed="false">Meisjes</button>
+      </div></div>
+    <div class="field"><label for="f-q">Zoek renner</label><input id="f-q" type="search" placeholder="Naam" autocomplete="off"></div>
+    <div class="sheet-actions"><button type="button" class="btn sec" id="f-clear">Wissen</button><button type="button" class="btn pri" id="f-done">Toon uitslagen</button></div>
+  </div>
+</div>
+
+<script type="application/json" id="data">__DATA__</script>
+<script>
+const DATA = JSON.parse(document.getElementById("data").textContent);
+const U = DATA.U, R = DATA.R, K = DATA.K;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const DAYS = ["zo","ma","di","wo","do","vr","za"], MONTHS = ["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
+const D = iso => new Date(iso + "T12:00:00");
+const fmtDate = iso => { const d = D(iso); return `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`; };
+const safeUrl = u => /^https:\/\/mijn\.knwu\.nl\//.test(u || "") ? u : "";
+const discOf = r => r.discipline || "cross";
+const evKey = r => `${r.date}|${r.place}`;
+const raceIdOf = r => (String(r.sourceUrl || "").match(/races\/(\d+)/) || [])[1];
+const raceAge = s => { const m = String(s).match(/U(\d+)/); if(m) return +m[1]; if(/nieuwel/i.test(s)) return 16; if(/junior|vrouwen/i.test(s)) return 19; return 99; };
+const SX = s => s === "M" ? `<span class="sx" title="jongen">M</span>` : (s === "V" ? `<span class="sx" title="meisje">V</span>` : "");
+const initials = n => n.split(" ").filter(w => /^[A-ZÀ-ÿ]/.test(w)).map(w => w[0]).slice(0, 2).join("").toUpperCase() || n[0].toUpperCase();
+const CHEV = `<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>`;
+const won = r => r.pos === 1 || (r.pos != null && r.sexPos === 1);
+
+// Tijden en verschillen
+const toSec = t => { const m = String(t || "").match(/(\d+):(\d+):(\d+(?:\.\d+)?)/); return m ? (+m[1]) * 3600 + (+m[2]) * 60 + parseFloat(m[3]) : null; };
+const laps = v => { const m = String(v || "").match(/(\d+)\s*Ronde/i); return m ? +m[1] : 0; };
+const fmtGap = s => { s = Math.round(Math.abs(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+const fmtTime = t => { const s = toSec(t); if(s == null) return ""; const r = Math.round(s), h = Math.floor(r / 3600), m = Math.floor(r % 3600 / 60), sec = r % 60; return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(sec).padStart(2, "0"); };
+function gapText(o, me){
+  const lo = laps(o.gap), lm = laps(me.gap);
+  if(lo !== lm){ const d = lm - lo; return `${Math.abs(d)} ronde${Math.abs(d) > 1 ? "s" : ""} ${d > 0 ? "voor" : "achter"}`; }
+  const a = toSec(o.time), b = toSec(me.time);
+  if(a == null || b == null) return "geen tijd";
+  const d = a - b;
+  if(Math.round(Math.abs(d)) === 0) return "zelfde tijd";
+  return `${fmtGap(d)} ${d < 0 ? "voor" : "achter"}`;
+}
+
+// Staat
+const st = {tab:"uitslagen", disc:"cross", ev:"", sex:"", q:"", rq:"", stack:[]};
+try{ const s = JSON.parse(localStorage.getItem("jva-app") || "{}"); if(s.disc === "cross" || s.disc === "mtb") st.disc = s.disc; if(["uitslagen","renners","klassement"].includes(s.tab)) st.tab = s.tab; }catch(e){}
+const save = () => { try{ localStorage.setItem("jva-app", JSON.stringify({disc:st.disc, tab:st.tab})); }catch(e){} };
+
+const inDisc = () => U.filter(r => discOf(r) === st.disc);
+function events(rows){
+  const m = new Map();
+  for(const r of rows){ const k = evKey(r); if(!m.has(k)) m.set(k, {key:k, date:r.date, place:r.place, name:r.eventName || "", url:safeUrl(r.sourceUrl), rows:[]}); m.get(k).rows.push(r); }
+  return [...m.values()].sort((a,b) => b.date.localeCompare(a.date) || a.place.localeCompare(b.place, "nl"));
+}
+function filtered(){
+  const q = st.q.trim().toLowerCase();
+  return inDisc().filter(r => (!st.ev || evKey(r) === st.ev) && (!st.sex || r.sex === st.sex) && (!q || r.name.toLowerCase().includes(q)));
+}
+const filterCount = () => (st.ev ? 1 : 0) + (st.sex ? 1 : 0) + (st.q.trim() ? 1 : 0);
+
+// Onderdelen
+function placeHTML(r){
+  if(r.pos == null) return `<b>–</b><span>${esc(r.status || "geen uitslag")}</span>`;
+  const mixed = (r.boys || 0) > 0 && (r.girls || 0) > 0;
+  const grp = r.sex === "M" ? "jongens" : "meisjes";
+  if(mixed && r.sexPos != null) return `<b>${r.pos}e</b><span>van ${r.total}</span><span class="g"><strong>${r.sexPos}e</strong> van ${r.sex === "M" ? r.boys : r.girls} ${grp}</span>`;
+  const known = (r.boys || 0) + (r.girls || 0) > 0;
+  return `<b>${r.pos}e</b><span>van ${r.total}${known ? " " + grp : ""}</span>`;
+}
+function resCard(r, ctx){
+  const cls = r.pos == null ? "res dns" : (won(r) ? "res won" : "res");
+  const badge = won(r) ? `<span class="badge">${r.pos === 1 ? "winst" : "beste " + (r.sex === "M" ? "jongen" : "meisje")}</span>` : "";
+  const sub = ctx === "profile" ? `${esc(r.place)} · ${esc(fmtDate(r.date))}<br>${esc(r.race)}` : esc(r.cat);
+  const act = ctx === "profile" ? `data-go="race" data-id="${esc(r.id)}"` : `data-go="rider" data-name="${esc(r.name)}"`;
+  return `<button type="button" class="${cls}" ${act}>
+    <span class="plate" aria-label="Startnummer ${esc(r.nr ?? "onbekend")}">${esc(r.nr ?? "–")}</span>
+    <span class="who"><b>${esc(r.name)}${SX(r.sex)}${badge}</b><span>${sub}</span></span>
+    <span class="pl">${placeHTML(r)}</span>${CHEV}</button>`;
+}
+
+// Schermen
+function viewUitslagen(){
+  const rows = filtered();
+  const evs = events(rows);
+  if(!evs.length) return `<div class="empty">Geen uitslagen gevonden${filterCount() ? ". Pas de filters aan." : "."}</div>`;
+  return evs.map(e => {
+    const d = D(e.date), wins = e.rows.filter(r => r.pos === 1).length, riders = new Set(e.rows.map(r => r.name)).size;
+    return `<button type="button" class="card" data-go="event" data-key="${esc(e.key)}"><div class="ev">
+      <span class="date" aria-hidden="true"><b>${d.getDate()}</b><span>${MONTHS[d.getMonth()]}</span></span>
+      <span><h2>${esc(e.place)}</h2><p>${esc(DAYS[d.getDay()])} · ${esc(e.name)}</p>
+      <span class="chips"><span class="chip">${riders} renner${riders === 1 ? "" : "s"}</span>${wins ? `<span class="chip win">${wins}× winst</span>` : ""}</span></span>
+      ${CHEV}</div></button>`;
+  }).join("");
+}
+function viewEvent(key){
+  const rows = filtered().filter(r => evKey(r) === key);
+  const all = inDisc().filter(r => evKey(r) === key);
+  const e = events(all)[0];
+  if(!e) return `<div class="empty">Deze wedstrijd staat niet in de app.</div>`;
+  const races = [...new Set(rows.map(r => r.race))].sort((a,b) => raceAge(a) - raceAge(b) || a.localeCompare(b, "nl"));
+  const head = `<p class="meta">${esc(fmtDate(e.date))} · ${esc(e.name)}${e.url ? ` · <a href="${esc(e.url)}" target="_blank" rel="noopener">uitslag op KNWU</a>` : ""}</p>`;
+  if(!races.length) return head + `<div class="empty">Geen renners met deze filters.</div>`;
+  return head + races.map(race => {
+    const rr = rows.filter(r => r.race === race).sort((a,b) => (a.pos ?? 999) - (b.pos ?? 999) || a.name.localeCompare(b.name, "nl"));
+    const r0 = rr[0], b = r0.boys || 0, g = r0.girls || 0, u = r0.unknownSex || 0;
+    const split = (b && g ? `${b} jongens, ${g} meisjes` : (g ? `${g} meisjes` : (b ? `${b} jongens` : ""))) + (u && (b || g) ? `, ${u} zonder M/V` : "");
+    return `<section class="group" aria-label="${esc(race)}"><div class="group-h"><b>${esc(race)}</b><span>${r0.total} gefinisht${split ? " · " + split : ""}</span></div>${rr.map(r => resCard(r, "event")).join("")}</section>`;
+  }).join("");
+}
+function riderList(){
+  const by = new Map();
+  for(const r of inDisc()){ if(!by.has(r.name)) by.set(r.name, []); by.get(r.name).push(r); }
+  return [...by.entries()].map(([name, rs]) => { rs.sort((a,b) => b.date.localeCompare(a.date)); return {name, rs, sex:rs[0].sex, cat:rs[0].cat}; }).sort((a,b) => a.name.localeCompare(b.name, "nl"));
+}
+function viewRenners(){
+  const q = st.rq.trim().toLowerCase();
+  const list = riderList().filter(x => !q || x.name.toLowerCase().includes(q));
+  const items = list.map(x => {
+    const n = x.rs.filter(r => r.pos != null).length, w = x.rs.filter(r => r.pos === 1).length;
+    return `<button type="button" class="rider" data-go="rider" data-name="${esc(x.name)}"><span class="ava" aria-hidden="true">${esc(initials(x.name))}</span>
+      <span class="who"><b>${esc(x.name)}${SX(x.sex)}</b><span>${esc(x.cat)}</span></span>
+      <span class="stat-mini"><b>${n}</b> race${n === 1 ? "" : "s"}${w ? `<br><b>${w}</b>× winst` : ""}</span>${CHEV}</button>`;
+  }).join("");
+  return `<div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="rq" type="search" placeholder="Zoek renner" aria-label="Zoek renner" value="${esc(st.rq)}" autocomplete="off"></div>
+    ${list.length ? `<div class="group">${items}</div>` : `<div class="empty">Geen renner gevonden.</div>`}`;
+}
+const compsFor = name => K.filter(k => (k.riders || []).includes(name));
+function compStatus(k){
+  const final = k.discipline === "mtb";
+  return {final, label: final ? "Eindklassement" : "Tussenstand", when: `${final ? "Seizoen afgelopen · eindstand" : "Seizoen loopt nog · stand"} na ${esc(k.updatedAfter)}, ${esc(fmtDate(k.updatedDate))}`};
+}
+function compBlock(k, name, open){
+  const s = compStatus(k), rows = k.rows || [], me = rows.find(r => r.name === name);
+  const win = rows.filter(r => r.idx >= me.idx - 2 && r.idx <= me.idx + 2);
+  const lead = (k.leader && me.pos !== 1 && k.leader.name !== name) ? `<div class="lead"><span class="lbl">Nummer 1 in het klassement</span><span class="nm">${esc(k.leader.name)}${SX(k.leader.sex)}</span><span class="dt">${k.leader.club ? esc(k.leader.club) + " · " : ""}${k.leader.points} punten · ${k.leader.points - me.points} meer dan ${esc(name.split(" ")[0])}</span></div>` : "";
+  return `<details class="comp" name="kl"${open ? " open" : ""}><summary><span class="sum"><span class="t">${esc(k.title)}</span><b>${s.label}</b></span><svg class="chev-d" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="comp-in"><p class="meta">${s.when} · <a href="${esc(safeUrl(k.sourceUrl))}" target="_blank" rel="noopener">klassement op KNWU</a></p>${lead}
+    <div class="big"><div><b>${me.pos}e</b><span>van ${k.total}</span></div><div><b>${me.points}</b><span>punten</span></div></div>
+    <table class="tbl"><tbody>${win.map(r => `<tr class="${r.name === name ? "me" : ""}"><td>${r.pos}</td><td>${esc(r.name)}${SX(r.sex)}${r.club ? `<span class="sub">${esc(r.club)}</span>` : ""}</td><td>${r.points} ptn</td></tr>`).join("")}</tbody></table></div></details>`;
+}
+function viewProfile(name, seg){
+  const rs = inDisc().filter(r => r.name === name).sort((a,b) => b.date.localeCompare(a.date));
+  const other = U.filter(r => r.name === name && discOf(r) !== st.disc).length;
+  const x = rs[0] || U.find(r => r.name === name);
+  const fin = rs.filter(r => r.pos != null);
+  const wins = rs.filter(r => r.pos === 1).length, pod = fin.filter(r => (r.sexPos ?? r.pos) <= 3).length;
+  const best = fin.length ? Math.min(...fin.map(r => r.pos)) : null;
+  const head = `<div class="card" role="group" aria-label="Profiel"><div class="prof"><span class="ava" aria-hidden="true">${esc(initials(name))}</span><div><h2>${esc(name)}${SX(x?.sex)}</h2><p>${esc(x?.cat || "")} · RC Jan van Arckel</p></div></div>
+    <div class="stats"><div class="stat"><b>${rs.length}</b><span>races</span></div><div class="stat"><b>${wins}</b><span>keer winst</span></div><div class="stat"><b>${pod}</b><span>podium</span></div><div class="stat"><b>${best ? best + "e" : "–"}</b><span>beste plek</span></div></div></div>
+    <div class="seg" role="group" aria-label="Weergave"><button type="button" data-seg="uitslagen" aria-pressed="${seg !== "klassement"}">Uitslagen</button><button type="button" data-seg="klassement" aria-pressed="${seg === "klassement"}">Klassement</button></div>`;
+  if(!rs.length) return head + `<div class="empty">Geen ${st.disc === "cross" ? "crossuitslagen" : "MTB-uitslagen"} voor ${esc(name)}.${other ? " Kies bovenaan de andere discipline." : ""}</div>`;
+  if(seg === "klassement"){
+    const comps = compsFor(name).filter(k => k.discipline === st.disc);
+    if(!comps.length) return head + `<div class="empty">Voor ${esc(name)} houdt de KNWU in deze discipline geen klassement bij, bijvoorbeeld omdat er voor U8 geen klassement is.</div>`;
+    return head + comps.map((k, i) => compBlock(k, name, i === 0)).join("");
+  }
+  return head + `<div class="group">${rs.map(r => resCard(r, "profile")).join("")}</div>`;
+}
+function viewRace(id){
+  const r = U.find(x => x.id === id); if(!r) return `<div class="empty">Uitslag niet gevonden.</div>`;
+  const race = R[raceIdOf(r)];
+  const head = `<p class="meta">${esc(r.place)} · ${esc(fmtDate(r.date))} · ${esc(r.race)} · <a href="${esc(safeUrl(r.sourceUrl))}" target="_blank" rel="noopener">uitslag op KNWU</a></p>`;
+  if(r.pos == null) return head + `<div class="empty">${esc(r.name)} heeft deze race niet uitgereden (${esc(r.status || "geen uitslag")}).</div>`;
+  if(!race) return head + `<div class="empty">De volledige uitslag van deze race staat niet in de app.</div>`;
+  const rows = race.rows || [], me = rows.find(x => x.name === r.name);
+  if(!me) return head + `<div class="empty">De uitslag rond ${esc(r.name)} staat niet in de app.</div>`;
+  const win = rows.filter(x => x.idx >= me.idx - 2 && x.idx <= me.idx + 2);
+  const w = race.winner, first = r.name.split(" ")[0];
+  const winBox = (w && r.pos !== 1 && w.name !== r.name) ? `<div class="lead"><span class="lbl">Winnaar van deze race</span><span class="nm">${esc(w.name)}${SX(w.sex)}</span><span class="dt">${w.club ? esc(w.club) + " · " : ""}${w.time ? "tijd " + fmtTime(w.time) + " · " + esc(first) + " op " + gapText({time:w.time, gap:""}, me).replace(/ voor$/, "") : "geen tijden bekend"}</span></div>` : "";
+  const mixed = (r.boys || 0) > 0 && (r.girls || 0) > 0;
+  return head + winBox + `<div class="big"><div><b>${r.pos}e</b><span>van ${race.total}</span></div>${mixed && r.sexPos ? `<div><b>${r.sexPos}e</b><span>bij de ${r.sex === "M" ? "jongens" : "meisjes"}</span></div>` : ""}${fmtTime(me.time) ? `<div><b>${fmtTime(me.time)}</b><span>finishtijd</span></div>` : ""}</div>
+    <table class="tbl"><tbody>${win.map(o => `<tr class="${o === me ? "me" : ""}"><td>${esc(o.pos)}</td><td>${esc(o.name)}${SX(o.sex)}${o.club ? `<span class="sub">${esc(o.club)}</span>` : ""}</td><td>${fmtTime(o.time) || "–"}<span class="sub">${o === me ? (r.pos === 1 ? "winnaar" : esc(o.gap || "")) : gapText(o, me)}</span></td></tr>`).join("")}</tbody></table>
+    <button type="button" class="card" data-go="rider" data-name="${esc(r.name)}"><span class="kl-row"><b>Profiel van ${esc(first)}</b>${CHEV}</span></button>`;
+}
+function viewKlassement(){
+  const comps = K.filter(k => k.discipline === st.disc).sort((a,b) => raceAge(a.title) - raceAge(b.title));
+  if(!comps.length) return `<div class="empty">Geen klassementen.</div>`;
+  const s0 = compStatus(comps[0]);
+  return `<p class="note">${s0.final ? "Het LJC-seizoen is afgelopen; dit zijn de eindklassementen." : "Het crossseizoen loopt nog; dit zijn de tussenstanden."} Tik op een renner voor de renners rondom.</p>` + comps.map(k => {
+    const s = compStatus(k), rows = (k.rows || []).filter(r => (k.riders || []).includes(r.name));
+    return `<section class="group" aria-label="${esc(k.title)}"><div class="group-h"><b>${esc(k.title)}</b><span><strong>${s.label}</strong> · ${k.total} renners</span></div>
+      ${k.leader && !rows.some(r => r.pos === 1) ? `<div class="res" style="cursor:default"><span class="plate" style="background:var(--chip);color:var(--ink)">1</span><span class="who"><b>${esc(k.leader.name)}${SX(k.leader.sex)}</b><span>${esc(k.leader.club || "")} · nummer 1</span></span><span class="pl"><b>${k.leader.points}</b><span>punten</span></span><span></span></div>` : ""}
+      ${rows.map(r => `<button type="button" class="res${r.pos === 1 ? " won" : ""}" data-go="rider" data-name="${esc(r.name)}" data-seg="klassement"><span class="plate">${r.pos}</span><span class="who"><b>${esc(r.name)}${SX(r.sex)}</b><span>RC Jan van Arckel</span></span><span class="pl"><b>${r.points}</b><span>punten</span></span>${CHEV}</button>`).join("")}</section>`;
+  }).join("");
+}
+
+// Weergave en navigatie
+function current(){ return st.stack[st.stack.length - 1] || {type:st.tab}; }
+function titleOf(v){
+  if(v.type === "uitslagen") return "Uitslagen";
+  if(v.type === "renners") return "Renners";
+  if(v.type === "klassement") return "Klassement";
+  if(v.type === "event") return v.key.split("|")[1];
+  if(v.type === "rider") return v.name;
+  if(v.type === "race") return "Uitslag";
+  return "";
+}
+function render(focus){
+  const v = current();
+  $("title-t").textContent = titleOf(v);
+  $("back").hidden = !st.stack.length;
+  const showFilter = v.type === "uitslagen" || v.type === "event";
+  $("filter-btn").hidden = !showFilter;
+  const fc = filterCount(); $("filter-dot").hidden = !fc; $("filter-dot").textContent = fc;
+  document.querySelectorAll("#disc button").forEach(b => b.setAttribute("aria-pressed", b.dataset.disc === st.disc));
+  document.querySelectorAll(".tabs button").forEach(b => { if(b.dataset.tab === st.tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+  let html = "";
+  if(v.type === "uitslagen") html = viewUitslagen();
+  else if(v.type === "renners") html = viewRenners();
+  else if(v.type === "klassement") html = viewKlassement();
+  else if(v.type === "event") html = viewEvent(v.key);
+  else if(v.type === "rider") html = viewProfile(v.name, v.seg);
+  else if(v.type === "race") html = viewRace(v.id);
+  const m = $("screen");
+  m.classList.remove("screen"); void m.offsetWidth; m.classList.add("screen");
+  m.innerHTML = html;
+  if(focus !== false) window.scrollTo(0, v.scroll || 0);
+  if(v.type === "renners"){ const i = $("rq"); if(i && focus === "rq"){ i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }
+  save();
+}
+function push(view){ const c = current(); c.scroll = window.scrollY; st.stack.push(view); window.scrollTo(0, 0); render(); }
+function back(){ st.stack.pop(); render(); }
+
+$("screen").addEventListener("click", e => {
+  const s = e.target.closest("[data-seg]:not([data-go])");
+  if(s){ const v = current(); v.seg = s.dataset.seg; render(false); return; }
+  const g = e.target.closest("[data-go]"); if(!g) return;
+  if(g.dataset.go === "event") push({type:"event", key:g.dataset.key});
+  else if(g.dataset.go === "rider") push({type:"rider", name:g.dataset.name, seg:g.dataset.seg || "uitslagen"});
+  else if(g.dataset.go === "race") push({type:"race", id:g.dataset.id});
+});
+$("screen").addEventListener("input", e => { if(e.target.id === "rq"){ st.rq = e.target.value; render("rq"); } });
+$("screen").addEventListener("toggle", e => {
+  if(e.target.matches && e.target.matches("details.comp") && e.target.open)
+    $("screen").querySelectorAll("details.comp[open]").forEach(d => { if(d !== e.target) d.open = false; });
+}, true);
+$("back").addEventListener("click", back);
+document.addEventListener("keydown", e => { if(e.key === "Escape"){ if(!$("sheet").hidden) closeSheet(); else if(st.stack.length) back(); } });
+document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => {
+  if(st.tab === b.dataset.tab && !st.stack.length){ window.scrollTo(0, 0); return; }
+  st.tab = b.dataset.tab; st.stack = []; window.scrollTo(0, 0); render();
+}));
+document.querySelectorAll("#disc button").forEach(b => b.addEventListener("click", () => {
+  if(st.disc === b.dataset.disc) return;
+  st.disc = b.dataset.disc; st.ev = "";
+  st.stack = st.stack.filter(v => v.type === "rider");
+  render();
+}));
+
+// Filterpaneel
+function fillEvents(){
+  const evs = events(inDisc());
+  $("f-ev").innerHTML = `<option value="">Alle wedstrijden</option>` + evs.map(e => `<option value="${esc(e.key)}">${esc(fmtDate(e.date))} · ${esc(e.place)}</option>`).join("");
+  $("f-ev").value = st.ev;
+}
+function syncSheet(){ document.querySelectorAll("#f-sex button").forEach(b => b.setAttribute("aria-pressed", b.dataset.sex === st.sex)); $("f-q").value = st.q; }
+let lastFocus = null;
+function openSheet(){ lastFocus = document.activeElement; fillEvents(); syncSheet(); $("scrim").hidden = false; $("sheet").hidden = false; $("f-ev").focus(); }
+function closeSheet(){ $("scrim").hidden = true; $("sheet").hidden = true; render(false); if(lastFocus) lastFocus.focus(); }
+$("filter-btn").addEventListener("click", openSheet);
+$("scrim").addEventListener("click", closeSheet);
+$("f-done").addEventListener("click", closeSheet);
+$("f-ev").addEventListener("change", e => { st.ev = e.target.value; });
+$("f-q").addEventListener("input", e => { st.q = e.target.value; });
+$("f-q").addEventListener("keydown", e => { if(e.key === "Enter") closeSheet(); });
+document.querySelectorAll("#f-sex button").forEach(b => b.addEventListener("click", () => { st.sex = b.dataset.sex; syncSheet(); }));
+$("f-clear").addEventListener("click", () => { st.ev = ""; st.sex = ""; st.q = ""; fillEvents(); syncSheet(); });
+$("sheet").addEventListener("keydown", e => {
+  if(e.key !== "Tab") return;
+  const f = [...$("sheet").querySelectorAll("button,select,input")].filter(x => !x.disabled);
+  if(e.shiftKey && document.activeElement === f[0]){ e.preventDefault(); f[f.length - 1].focus(); }
+  else if(!e.shiftKey && document.activeElement === f[f.length - 1]){ e.preventDefault(); f[0].focus(); }
+});
+
+render();
+</script>

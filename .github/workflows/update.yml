@@ -1,0 +1,69 @@
+name: Uitslagen bijwerken
+
+on:
+  schedule:
+    # Elke avond 18:00 Nederlandse tijd. GitHub rekent in UTC, dus beide tijden staan erin;
+    # het script draait alleen door op het tijdstip dat in Nederland 18:00 is.
+    - cron: "0 16 * * *"   # zomertijd (CEST)
+    - cron: "0 17 * * *"   # wintertijd (CET)
+  workflow_dispatch:
+    inputs:
+      from:
+        description: "Opnieuw ophalen vanaf datum (JJJJ-MM-DD, optioneel)"
+        required: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tijd controleren
+        id: tijd
+        run: |
+          zone=$(TZ=Europe/Amsterdam date +%Z)   # CEST (zomer) of CET (winter)
+          plan="${{ github.event.schedule }}"
+          if [ "${{ github.event_name }}" != "schedule" ] \
+             || { [ "$zone" = "CEST" ] && [ "$plan" = "0 16 * * *" ]; } \
+             || { [ "$zone" = "CET" ] && [ "$plan" = "0 17 * * *" ]; }; then
+            echo "ga=ja" >> "$GITHUB_OUTPUT"
+          else
+            echo "ga=nee" >> "$GITHUB_OUTPUT"; echo "Dit tijdstip is niet 18:00 in Nederland ($zone), overslaan."
+          fi
+      - uses: actions/checkout@v4
+        if: steps.tijd.outputs.ga == 'ja'
+      - uses: actions/setup-node@v4
+        if: steps.tijd.outputs.ga == 'ja'
+        with:
+          node-version: 20
+      - name: KNWU-uitslagen ophalen
+        if: steps.tijd.outputs.ga == 'ja'
+        id: update
+        run: node scripts/update.mjs ${{ github.event.inputs.from && format('--from={0}', github.event.inputs.from) || '' }}
+      - name: App bouwen
+        if: steps.tijd.outputs.ga == 'ja'
+        run: node scripts/build.mjs
+      - name: Wijzigingen opslaan
+        if: steps.tijd.outputs.ga == 'ja'
+        run: |
+          git config user.name "jva-uitslagen-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data.json index.html
+          if git diff --cached --quiet; then echo "Niets nieuw."; else git commit -m "Uitslagen bijgewerkt $(TZ=Europe/Amsterdam date +%Y-%m-%d)"; git push; fi
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.tijd.outputs.ga == 'ja'
+        with:
+          path: .
+      - id: deploy
+        if: steps.tijd.outputs.ga == 'ja'
+        uses: actions/deploy-pages@v4
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
