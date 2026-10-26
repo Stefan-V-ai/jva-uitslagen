@@ -47,6 +47,8 @@ async function pool(items, n, fn) {
   return out;
 }
 
+const sortKeys = x => Array.isArray(x) ? x.map(sortKeys) : x && typeof x === "object" ? Object.fromEntries(Object.keys(x).sort().map(k => [k, sortKeys(x[k])])) : x;
+const canon = x => JSON.stringify(sortKeys(x));
 const iso = s => String(s || "").slice(0, 10);
 const addDays = (d, n) => { const t = new Date(d + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };
 const slug = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -178,11 +180,15 @@ async function updateResults(get, data, log, opts = {}) {
     });
     for (const res of lists.flat()) {
       if (res.error) { added.errors = (added.errors || 0) + 1; continue; }
-      const had = new Set(data.U.filter(u => u.sourceUrl.endsWith("/" + res.raceId)).map(u => u.id));
+      const old = new Map(data.U.filter(u => u.sourceUrl.endsWith("/" + res.raceId)).map(u => [u.name, u]));
+      for (const u of res.U) {
+        const o = old.get(u.name);
+        if (o) u.id = o.id; // bestaande id's behouden
+        else added.push(u);
+      }
       data.U = data.U.filter(u => !u.sourceUrl.endsWith("/" + res.raceId));
       data.U.push(...res.U);
       data.R[res.raceId] = res.R;
-      for (const u of res.U) if (!had.has(u.id)) added.push(u);
     }
   }
   data.U.sort((a, b) => a.date.localeCompare(b.date) || a.place.localeCompare(b.place) || a.name.localeCompare(b.name));
@@ -221,7 +227,7 @@ async function updateStandings(get, data, log) {
         leader: (({ name, club, points, sex }) => ({ name, club, points, sex }))(row(items[0], 0)),
       };
       if (!clubIdx.length) { log(`klassement ${c.id}: geen clubrenners meer, oude stand blijft`); continue; }
-      if (!existing || JSON.stringify(existing) !== JSON.stringify(k)) {
+      if (!existing || canon(existing) !== canon(k)) {
         data.K = data.K.filter(x => x.id !== id).concat(k);
         changed.push(k.title);
       }
