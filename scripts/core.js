@@ -113,7 +113,10 @@ async function processRace(get, raceStub, ev, discipline, keep) {
   }
   const finishers = results.filter(x => isNum(x.pos)).sort((a, b) => +a.pos - +b.pos);
   if (!finishers.length) return null; // b.v. techniekonderdelen zonder plaatsen
-  const sexP = x => (info.get(x.personId) || {}).sex || null;
+  // Alleen-mannen- of alleen-vrouwenrace: dan is iedereen (ook buitenlanders zonder KNWU-categorie) M resp. V.
+  const genders = new Set((race.raceCategories || []).map(c => sexOf(c.categoryGender)));
+  const raceSex = genders.size === 1 ? [...genders][0] : null;
+  const sexP = x => (info.get(x.personId) || {}).sex || raceSex || null;
   const boys = finishers.filter(x => sexP(x) === "M").length, girls = finishers.filter(x => sexP(x) === "V").length;
   const unknownSex = finishers.length - boys - girls;
   const date = iso(race.date || ev.startDate);
@@ -127,7 +130,7 @@ async function processRace(get, raceStub, ev, discipline, keep) {
   const U = [], idxs = new Set();
   for (const x of club) {
     const inf = info.get(x.personId) || {};
-    const sex = inf.sex || null;
+    const sex = inf.sex || raceSex || null;
     if (inf.cat ? !inScope(inf.cat, sex) : !(race.raceCategories || []).every(c => inScope(c.categoryName, sexOf(c.categoryGender)))) continue;
     const fin = isNum(x.pos);
     const fi = fin ? finishers.indexOf(x) : -1;
