@@ -73,6 +73,7 @@ div.card{cursor:default}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:var(--chip);font-size:13px;font-weight:600;color:var(--muted)}
 .chip.win{background:var(--win-soft);color:var(--win)}
+.chip.pod{background:var(--plate);color:var(--plate-ink)}
 .chev{color:var(--muted)}
 
 /* Renner-uitslagkaart */
@@ -309,10 +310,11 @@ function viewUitslagen(){
   if(!evs.length) return `<div class="empty">Geen uitslagen gevonden${filterCount() ? ". Pas de filters aan." : "."}</div>`;
   return evs.map(e => {
     const d = D(e.date), wins = e.rows.filter(r => r.pos === 1).length, riders = new Set(e.rows.map(r => r.name)).size;
+    const pods = e.rows.filter(r => r.pos != null && (r.sexPos ?? r.pos) <= 3).length; // podium binnen eigen geslacht
     return `<button type="button" class="card" data-go="event" data-key="${esc(e.key)}"><div class="ev">
       <span class="date" aria-hidden="true"><b>${d.getDate()}</b><span>${MONTHS[d.getMonth()]}</span></span>
       <span><h2>${esc(e.place)}</h2><p>${esc(DAYS[d.getDay()])} · ${esc(e.name)}</p>
-      <span class="chips"><span class="chip">${riders} renner${riders === 1 ? "" : "s"}</span>${wins ? `<span class="chip win">${wins}× winst</span>` : ""}</span></span>
+      <span class="chips"><span class="chip">${riders} renner${riders === 1 ? "" : "s"}</span>${wins ? `<span class="chip win">${wins}× winst</span>` : ""}${pods ? `<span class="chip pod">${pods}× podium</span>` : ""}</span></span>
       ${CHEV}</div></button>`;
   }).join("");
 }
